@@ -49,6 +49,13 @@ public class MultaHandler {
                         .body(multaService.saveMulta(multa), Multa.class));
     }
 
+    public Mono<ServerResponse> deleteMulta(ServerRequest serverRequest){
+        String id = serverRequest.pathVariable("id");
+        return multaService.deleteMulta(id)
+                .flatMap(multa -> ServerResponse.noContent().build())
+                .switchIfEmpty(notFound());
+    }
+
 
 
     private void validate(Multa multa){

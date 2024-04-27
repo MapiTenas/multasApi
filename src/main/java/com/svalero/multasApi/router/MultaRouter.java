@@ -19,8 +19,8 @@ public class MultaRouter {
         return RouterFunctions
                 .route(GET("/multas").and(accept(MediaType.APPLICATION_JSON)), multaHandler::getAllMultas)
                 .andRoute(GET("/multa/{id}").and(accept(MediaType.APPLICATION_JSON)), multaHandler::getMulta)
-                .andRoute(POST("/multas").and(accept(MediaType.APPLICATION_JSON)), multaHandler::createMulta);
-                //.andRoute(DELETE("/multa/{id}").and(accept(MediaType.APPLICATION_JSON)), multaHandler::deleteMulta)
+                .andRoute(POST("/multas").and(accept(MediaType.APPLICATION_JSON)), multaHandler::createMulta)
+                .andRoute(DELETE("/multa/{id}").and(accept(MediaType.APPLICATION_JSON)), multaHandler::deleteMulta);
                 //.andRoute(PUT("/multa/{id}").and(accept(MediaType.APPLICATION_JSON)), multaHandler::updateMulta);
     }
 }

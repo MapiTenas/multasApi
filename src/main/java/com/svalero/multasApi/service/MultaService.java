@@ -27,4 +27,8 @@ public class MultaService {
         newMulta.setHora(event.getHora());
         return multaRepository.save(newMulta);
     }
+
+    public Mono<Void> deleteMulta(String id) {
+        return multaRepository.deleteById(id);
+    }
 }

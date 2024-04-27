@@ -36,7 +36,7 @@ public class MultaHandler {
                 .flatMap(p -> ServerResponse.ok()
                         .contentType(MediaType.APPLICATION_JSON)
                         .body(Mono.just(p), Multa.class))
-                .switchIfEmpty(notFound());
+                .switchIfEmpty(notFound(id));
     }
 
     public Mono<ServerResponse> createMulta(ServerRequest serverRequest) {
@@ -51,12 +51,24 @@ public class MultaHandler {
 
     public Mono<ServerResponse> deleteMulta(ServerRequest serverRequest){
         String id = serverRequest.pathVariable("id");
-        return multaService.deleteMulta(id)
-                .flatMap(multa -> ServerResponse.noContent().build())
-                .switchIfEmpty(notFound());
+        return multaService.getMulta(id)
+                .flatMap(event -> multaService.deleteMulta(id)
+                        .then(ServerResponse.noContent().build()))
+                .switchIfEmpty(notFound(id));
     }
 
+    public Mono<ServerResponse> updateMulta(ServerRequest serverRequest) {
 
+        String multaId = serverRequest.pathVariable("id");
+        Mono<Multa> multaMono = serverRequest.bodyToMono(Multa.class)
+                .doOnNext(this::validate);
+        return multaService.updateMulta(multaId, multaMono)
+                .flatMap(updatedEvent ->
+                        ServerResponse.status(HttpStatus.CREATED)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .bodyValue(updatedEvent))
+                .switchIfEmpty(notFound(multaId));
+    }
 
     private void validate(Multa multa){
         Errors errors = new BeanPropertyBindingResult(multa,"multa");
@@ -67,10 +79,10 @@ public class MultaHandler {
         }
     }
 
-    private Mono<ServerResponse> notFound() {
+    private Mono<ServerResponse> notFound(String id) {
         return ServerResponse.status(HttpStatus.NOT_FOUND)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(Mono.just(new ErrorResponse(404, "Multa no encontrada")), ErrorResponse.class);
+                .body(Mono.just(new ErrorResponse(404, " El registro : " + id + " no se ha encontrado ")), ErrorResponse.class);
     }
 
 }

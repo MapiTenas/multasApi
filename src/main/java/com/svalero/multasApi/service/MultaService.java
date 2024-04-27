@@ -31,4 +31,15 @@ public class MultaService {
     public Mono<Void> deleteMulta(String id) {
         return multaRepository.deleteById(id);
     }
+    public Mono<Multa> updateMulta(String id, Mono<Multa> multa) {
+        return multa.flatMap((m) ->
+                multaRepository.findById(id).flatMap(existingMulta -> {
+                    existingMulta.setMatricula(m.getMatricula());
+                    existingMulta.setVelocidadAlcanzada(m.getVelocidadAlcanzada());
+                    existingMulta.setFecha(m.getFecha());
+                    existingMulta.setHora(m.getHora());
+                    return multaRepository.save(existingMulta);
+                })
+        );
+    }
 }

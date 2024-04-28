@@ -1,0 +1,268 @@
+openapi: 3.0.1
+info:
+  title: Multas API
+  description: Api reactiva que permite listar y trabajar sobre los datos recogidos por un radar.
+  version: 1.0.0
+servers:
+  - url: 'localhost/8090'
+
+tags:
+  - name: multas
+    description: Operaciones para trabajar con los datos sobre multas.
+
+paths:
+  /multas:
+    get:
+      tags:
+        - multas
+      summary: Devuelve un listado de multas.
+      description: Esta operación devuelve un listado reactivo de multas puestas por un radar.
+      responses:
+        '200':
+          description: Devuelve un listado completo de multas.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MultaOut'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      tags:
+        - multas
+      summary: Añade una nueva multa.
+      description: Permite registrar una nueva multa.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MultaIn'
+      responses:
+        '201':
+          description: Se ha registrado una nueuva multa.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MultaIn'
+        '400':
+          description: Validation error on input data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+  /multa/{id}:
+    get:
+      tags:
+        - multas
+      summary: Busca una multa concreta.
+      description: Esta operación recupera una multa concreta a traves de su identificador único (id).
+      parameters:
+        - name: id
+          in: path
+          description: Identificador (id) de la multa
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Devuelve la información única de una multa en concreto.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MultaOut'
+        '400':
+          description: Validation error on input data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+
+        '404':
+          description: Information not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      tags:
+        - multas
+      summary: Elimina una multa concreta.
+      description: Esta operación elimina una multa concreta ultilizando su identificador único (id).
+      parameters:
+        - name: id
+          in: path
+          description: Identificador (id) de la multa
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Information deleted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoContent'
+        '404':
+          description: Information not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    put:
+      tags:
+        - multas
+      summary: Actualiza la información de una multa concreta.
+      description: Esta operación permite actualizar la información de una multa concreta utilizando su identificador único (id).
+      parameters:
+        - name: id
+          in: path
+          description: Identificador (id) de la multa
+          required: true
+          schema:
+            type: string
+        - name: info_multa
+          in: query
+          description: Información actualizada de la multa
+          required: true
+          schema:
+            $ref: '#/components/schemas/MultaIn'
+      responses:
+        '200':
+          description: Multa actualizada correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MultaOut'
+        '400':
+          description: Validation error on input data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        '404':
+          description: Information not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+
+components:
+  schemas:
+    MultaOut:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 662ce0c627a9b97934b5afd
+          description: Identificador único de multa.
+        matricula:
+          type: string
+          example: 369GML
+          description: Matricula del coche infractor.
+        velocidadAlcanzada:
+          type: string
+          example: 140 KM
+          description: Velocidad a la que circulaba el coche cuando se grabó el dato de la multa.
+        fecha:
+          type: string
+          example: 28/04/2024
+          description: Día en el que se graba la multa.
+        hora:
+          type: string
+          example: 16:56
+          description: Hora en la que se graba la multa.
+    MultaIn:
+      type: object
+      properties:
+        matricula:
+          type: string
+          example: 369GML
+          description: Matricula del coche infractor.
+        velocidadAlcanzada:
+          type: string
+          example: 140 KM
+          description: Velocidad a la que circulaba el coche cuando se grabó el dato de la multa.
+        fecha:
+          type: string
+          example: 28/04/2024
+          description: Día en el que se graba la multa.
+        hora:
+          type: string
+          example: 16:56
+          description: Hora en la que se graba la multa.
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: number
+          format: int32
+        message:
+          type: string
+        errors:
+          type: array
+          items:
+            type: string
+    NoContent:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+      example:
+        code: 204
+        message: No Content
+    BadRequest:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+      example:
+        code: 400
+        message: Validation error
+    NotFound:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+      example:
+        code: 404
+        message: Not found
+    InternalServerError:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+      example:
+        code: 500
+        message: Internal Server Error
+        error: [ ]

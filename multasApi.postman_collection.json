@@ -1,0 +1,137 @@
+{
+	"info": {
+		"_postman_id": "91ad1af0-c8f4-4bd2-9e72-b6a3d48a128d",
+		"name": "multasApi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31328466"
+	},
+	"item": [
+		{
+			"name": "/multa",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"matricula\": \"BRO2112\",\r\n  \"velocidadAlcanzada\": \"200 KM\",\r\n  \"fecha\": \"05/05/2024\",\r\n  \"hora\": \"13:23\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/multas",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"multas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/multa/:id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/multa/:id",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"multa",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "6637d8a4418c74696e6609ce",
+							"uuid": "aec90947-f72d-496a-a1e7-61398ccac65c"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/multas",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/multas",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"multas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/multa/:id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/multa/:id",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"multa",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "6637d8a4418c74696e6609ce",
+							"uuid": "42f5176e-bec8-459e-8482-11bb35c8556a"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/multa/:id",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"matricula\": \"342DAS\",\r\n  \"velocidadAlcanzada\": \"140 KM\",\r\n  \"fecha\": \"27/04/2024\",\r\n  \"hora\": \"13:23\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/multa/:id",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"multa",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "662d06b7b875543a9723af5a",
+							"uuid": "ee7d64ff-889e-40f2-bf36-fc787c66bc27"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
